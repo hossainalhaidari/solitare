@@ -23,7 +23,7 @@ export class Resolve extends Action<ResolvePayload> {
   public validate = () => {
     switch (this.payload.resolveType) {
       case ResolveType.Stack:
-        return true;
+        return state.stacks[this.payload.fromStack].length > 0;
       case ResolveType.Pile:
         return state.pile.length > 0;
     }
@@ -62,7 +62,7 @@ export class Resolve extends Action<ResolvePayload> {
       return `Resolved ${card.getName()}`;
     }
 
-    return `Cannot resolve  ${card.getName()}`;
+    return `Cannot resolve ${card.getName()}`;
   };
 
   private undoStack = () => {

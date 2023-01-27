@@ -32,10 +32,6 @@ export const initUI = () => {
   screen.key("left", left);
   screen.key("down", down);
   screen.key("right", right);
-  screen.key("k", up);
-  screen.key("h", left);
-  screen.key("j", down);
-  screen.key("l", right);
   screen.key("p", () => {
     const result = executeAction({
       action: ActionType.NextInPile,
@@ -82,7 +78,7 @@ export const initUI = () => {
       print("Cannot save state!");
     }
   });
-  screen.key("d", () => {
+  screen.key("l", () => {
     if (loadState()) {
       refreshUI();
       print("State loaded!");
@@ -107,7 +103,14 @@ export const refreshUI = () => {
   if (state.moveType !== MoveType.None) {
     const stackButtons = [];
     for (let i = 0; i < 7; i++) {
-      stackButtons.push(createMoveButton(i + 1, i, game.largestStack() + 1));
+      stackButtons.push(
+        createButton({
+          x: i,
+          y: game.largestStack() + 1,
+          content: `S${i + 1}`,
+          bg: "blue",
+        })
+      );
     }
     matrix.push(stackButtons);
   }
@@ -145,7 +148,7 @@ const generateButtons = (index: number) => {
       topButton = createCardButton(getLastCard(state.diamonds), index, 0);
       break;
     default:
-      topButton = createEmptyButton();
+      topButton = createButton({ hidden: true });
       break;
   }
 
@@ -407,27 +410,17 @@ const createCardButton = (
   y: number
 ) =>
   createButton({
-    left: x * 6,
-    top: y + (y * 2 + 1),
-    content: card?.getName() ?? "  ",
-    bg: card ? (card.hidden ? "white" : card.getColor()) : "white",
+    content: card?.getName() ?? "--",
+    bg: card?.getColor() ?? "white",
+    x,
+    y,
   });
-
-const createMoveButton = (num: number, x: number, y: number) =>
-  createButton({
-    left: x * 6,
-    top: y + (y * 2 + 1),
-    content: `S${num}`,
-    bg: "yellow",
-  });
-
-const createEmptyButton = () => createButton({ hidden: true });
 
 const createButton = ({
   content = "",
   bg = "black",
-  left = 0,
-  top = 0,
+  x = 0,
+  y = 0,
   hidden = false,
 }: Partial<Widgets.ButtonOptions>) =>
   button({
@@ -439,20 +432,15 @@ const createButton = ({
       left: 1,
       right: 1,
     },
-    left,
-    top,
+    left: x * 4,
+    top: y + 1 + (y > 0 ? 1 : 0),
     name: content,
     content,
-    border: { type: "line" },
     style: {
       bg,
-      border: {
-        fg: "black",
-      },
       focus: {
-        border: {
-          fg: "white",
-        },
+        bg: "yellow",
+        fg: bg,
       },
     },
   });

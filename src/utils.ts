@@ -57,11 +57,11 @@ export const createCard = (
   };
 
   card.getName = () => {
-    if (card.hidden) return "  ";
+    if (card.hidden) return "--";
     return `${card.getCode()}${getCardSymbol(card)}`;
   };
 
-  card.getColor = () => getCardColor(card);
+  card.getColor = () => (card.hidden ? "white" : getCardColor(card));
 
   card.show = () => {
     card.hidden = false;

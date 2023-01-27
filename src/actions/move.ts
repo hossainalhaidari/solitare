@@ -73,7 +73,11 @@ export class Move extends Action<MovePayload> {
     const from = state.stacks[this.payload.fromStack].slice(
       state.stacks[this.payload.fromStack].length - this.payload.count
     );
-    const to = state.stacks[this.payload.toStack].slice(-1)[0];
+    const to =
+      state.stacks[this.payload.toStack].length > 0
+        ? state.stacks[this.payload.toStack].slice(-1)[0]
+        : null;
+    const toName = to ? to.getName() : "new stack";
 
     if (from.length === 0 || from[0].hidden) {
       return "Can't move that card!";
@@ -90,10 +94,10 @@ export class Move extends Action<MovePayload> {
 
       this.pushHistory();
 
-      return `Moved ${from[0].getName()} to ${to.getName()}`;
+      return `Moved ${from[0].getName()} to ${toName}`;
     }
 
-    return `Can't move ${from[0].getName()} to ${to.getName()}`;
+    return `Can't move ${from[0].getName()} to ${toName}`;
   };
 
   private undoFromStack = () => {
@@ -115,7 +119,12 @@ export class Move extends Action<MovePayload> {
     if (!this.validate()) return "Can't move that card!";
 
     const from = getCurrentPile()!;
-    const to = state.stacks[this.payload.toStack].slice(-1)[0];
+
+    const to =
+      state.stacks[this.payload.toStack].length > 0
+        ? state.stacks[this.payload.toStack].slice(-1)[0]
+        : null;
+    const toName = to ? to.getName() : "new stack";
 
     if (this.canMove(from, to)) {
       state.stacks[this.payload.toStack].push(from);
@@ -129,10 +138,10 @@ export class Move extends Action<MovePayload> {
 
       this.pushHistory();
 
-      return `Moved ${from.getName()} to ${to.getName()}`;
+      return `Moved ${from.getName()} to ${toName}`;
     }
 
-    return `Can't move ${from.getName()} to ${to.getName()}!`;
+    return `Can't move ${from.getName()} to ${toName}!`;
   };
 
   private undoFromPile = () => {
@@ -165,7 +174,11 @@ export class Move extends Action<MovePayload> {
     }
 
     const from = fromResolved[fromResolved.length - 1];
-    const to = state.stacks[this.payload.toStack].slice(-1)[0];
+    const to =
+      state.stacks[this.payload.toStack].length > 0
+        ? state.stacks[this.payload.toStack].slice(-1)[0]
+        : null;
+    const toName = to ? to.getName() : "new stack";
 
     if (this.canMove(from, to)) {
       state.stacks[this.payload.toStack].push(from);
@@ -173,10 +186,10 @@ export class Move extends Action<MovePayload> {
 
       this.pushHistory();
 
-      return `Moved ${from.getName()} to ${to.getName()}`;
+      return `Moved ${from.getName()} to ${toName}`;
     }
 
-    return `Can't move ${from.getName()} to ${to.getName()}!`;
+    return `Can't move ${from.getName()} to ${toName}!`;
   };
 
   private undoFromResolved = () => {
@@ -191,7 +204,7 @@ export class Move extends Action<MovePayload> {
     return `Undo: Moving ${from.getName()}`;
   };
 
-  private canMove = (from: Card, to: Card) => {
+  private canMove = (from: Card, to: Card | null) => {
     if (!from || from.hidden) return false;
     if (!to) return from.code === 13;
     return to.code - from.code === 1 && from.getColor() !== to.getColor();
