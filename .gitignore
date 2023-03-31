@@ -8,3 +8,4 @@ node_modules
 dist
 .soli-state
 TODO.md
+.DS_Store

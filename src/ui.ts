@@ -40,16 +40,7 @@ export const initUI = () => {
     print(result);
     refreshUI();
   });
-  screen.key("r", () => {
-    if (game.isFinished()) {
-      resetState();
-      game.initGame();
-      refreshUI();
-      print("Solitare");
-    } else {
-      resolve();
-    }
-  });
+  screen.key("r", () => resolve());
   screen.key("a", () => {
     if (state.moveType === MoveType.None) {
       print(game.autoResolve());
@@ -86,6 +77,14 @@ export const initUI = () => {
       print("Cannot load state!");
     }
   });
+  screen.key("n", () => {
+    if (game.isFinished()) {
+      resetState();
+      game.initGame();
+      refreshUI();
+      print("Solitare");
+    }
+  });
 
   refreshUI();
 };
@@ -119,7 +118,7 @@ export const refreshUI = () => {
   resetFocus();
 
   if (game.isFinished()) {
-    print("YOU WON! Press 'r' for a new game, 'q' to quit.");
+    print("YOU WON! Press 'n' for a new game, 'q' to quit.");
   }
 };
 

@@ -5,7 +5,7 @@ const getCardSymbol = (card: Card) => {
     case CardType.Club:
       return "♣";
     case CardType.Diamond:
-      return "◆";
+      return "♦";
     case CardType.Heart:
       return "♥";
     case CardType.Spade:

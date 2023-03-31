@@ -1,9 +1,9 @@
 {
-  "name": "soli",
+  "name": "solitare",
   "version": "0.1.0",
   "description": "CLI-based Solitare game",
   "author": "Hossain Alhaidari <dev@hossain.al> (https://hossain.al)",
-  "homepage": "https://github.com/hossainalhaidari/soli",
+  "homepage": "https://github.com/hossainalhaidari/solitare",
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
