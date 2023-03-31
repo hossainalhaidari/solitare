@@ -1,4 +1,4 @@
-# Soli
+# Solitare
 
 CLI-based Solitare game
 
